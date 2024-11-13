@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: syft-admission-webhook
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syft-admission-webhook
+  template:
+    metadata:
+      labels:
+        app: syft-admission-webhook
+    spec:
+      containers:
+        - name: syft-admission-webhook
+          image: mbx1010/syft-admission-webhook:latest 
+          ports:
+            - containerPort: 443
+          volumeMounts:
+            - name: certs
+              mountPath: /certs
+              readOnly: true
+      volumes:
+        - name: certs
+          secret:
+            secretName: syft-webhook-tls  # The TLS secret created by cert-manager
+

@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: syft-webhook-tls
+  namespace: default
+spec:
+  secretName: syft-webhook-tls  # The secret where the TLS cert will be stored
+  commonName: syft-admission-webhook.default.svc  # Must match the service name
+  dnsNames:
+    - syft-admission-webhook.default.svc
+  issuerRef:
+    name: selfsigned-issuer  # The name of the Issuer we created above
+    kind: Issuer
+
